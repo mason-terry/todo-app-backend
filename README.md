@@ -1,5 +1,7 @@
 # Todo App Backend
 
 To start:
-```npm install
-npm run start```
+```bash
+npm install
+npm run start
+```
