@@ -3,10 +3,10 @@ const Schema = mongoose.Schema
 
 const ListSchema = new Schema({
   name: String,
-  items: Array,
   members: Array,
-  owner: { name: String, id: String },
+  owner: { type: Schema.ObjectId, ref: 'User', index: true },
   createdOn: Date,
+  updatedOn: Date,
   deletedOn: Date,
   deleted: Boolean
 })

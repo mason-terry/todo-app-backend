@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { userController } = require('../../controllers')
+const { userController, listController } = require('../../controllers')
 
 router
   .route('/')
@@ -12,6 +12,8 @@ router
   .route('/:id')
   .get(userController.getUser)
   .put(userController.updateUser)
+
+router.route('/:id/lists').get(listController.getLists)
 
 router.route('/login').post(userController.login)
 

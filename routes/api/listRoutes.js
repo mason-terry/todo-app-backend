@@ -1,11 +1,13 @@
 const router = require('express').Router()
-const { listController } = require('../../controllers')
+const { listController, todoController } = require('../../controllers')
 
 router
   .route('/')
   .get(listController.getLists)
   .post(listController.addList)
 
-router.route('/:id').post(listController.getUserLists)
+router.route('/:id').get(listController.getList)
+
+router.route('/:id/todos').get(todoController.getTodos)
 
 module.exports = router

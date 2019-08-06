@@ -1,30 +1,36 @@
-const { TodoModel } = require('../models')
+const { TodoModel, ListModel } = require('../models')
 const { verifyToken } = require('../util/token')
 
 module.exports = {
   getTodos: async (req, res) => {
-    const token = req.headers.token
-    if (!token) {
-      console.log('no token')
-      return
-    }
-    const verified = await verifyToken(token)
+    // const token = req.headers.token
+    // if (!token) {
+    //   console.log('no token')
+    //   return
+    // }
+    // const verified = await verifyToken(token)
 
-    if (verified) {
-      const todos = await TodoModel.find({ deleted: { $ne: true } })
+    // if (verified) {
+      const listId = req.params.id
+      const todos = await TodoModel.find({ list: listId, deleted: { $ne: true } })
+      console.log('todos', todos)
       res.status(200).send(todos)
-    } else {
-      res
-        .status(403)
-        .send({ success: false, message: `I'm sorry, you are not allowed to look at this page...` })
-    }
+    // } else {
+    //   res
+    //     .status(403)
+    //     .send({ success: false, message: `I'm sorry, you are not allowed to look at this page...` })
+    // }
   },
   addTodo: async (req, res) => {
     const item = req.body.item
+    const list = req.body.listId
+    const user = req.body.userId
     const createdOn = new Date()
 
     const newTodo = await new TodoModel({
       item,
+      list,
+      user,
       createdOn
     })
 
