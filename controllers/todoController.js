@@ -13,7 +13,6 @@ module.exports = {
     // if (verified) {
       const listId = req.params.id
       const todos = await TodoModel.find({ list: listId, deleted: { $ne: true } })
-      console.log('todos', todos)
       res.status(200).send(todos)
     // } else {
     //   res

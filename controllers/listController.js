@@ -1,11 +1,10 @@
 const { ListModel } = require('../models')
-const { UserModel } = require('../models')
 
 module.exports = {
   getLists: async (req, res) => {
     const id = req.params.id
-    const ownersLists = await ListModel.find({ owner: id })
-    const sharedLists = await ListModel.find({ members: { $in: id }})
+    const ownersLists = await ListModel.find({ owner: id }).sort({ _id: -1 })
+    const sharedLists = await ListModel.find({ members: { $in: id }}).sort({ _id: -1 })
 
     res.status(200).send({ ownersLists, sharedLists })
   },
@@ -22,7 +21,7 @@ module.exports = {
 
     await newList.save(error => {
       if (error) res.status(400).send({ success: false, message: `Something went wrong: ${error}` })
-      res.status(200).send({ success: true, message: 'List added successfully!' })
+      res.status(200).send({ success: true, message: 'List added successfully!', newList })
     })
   },
   getList: async (req, res) => {
