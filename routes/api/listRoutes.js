@@ -6,7 +6,10 @@ router
   .get(listController.getLists)
   .post(listController.addList)
 
-router.route('/:id').get(listController.getList)
+router
+  .route('/:id')
+   .get(listController.getList)
+   .post(listController.deleteList)
 
 router.route('/:id/todos').get(todoController.getTodos)
 

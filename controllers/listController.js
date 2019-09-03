@@ -3,7 +3,7 @@ const { ListModel } = require('../models')
 module.exports = {
   getLists: async (req, res) => {
     const id = req.params.id
-    const ownersLists = await ListModel.find({ owner: id }).sort({ _id: -1 })
+    const ownersLists = await ListModel.find({ owner: id, deleted: { $ne: true }}).sort({ _id: -1 })
     const sharedLists = await ListModel.find({ members: { $in: id }}).sort({ _id: -1 })
 
     res.status(200).send({ ownersLists, sharedLists })
@@ -30,5 +30,11 @@ module.exports = {
     const list = await ListModel.findById(id)
 
     res.status(200).send(list)
+  },
+  deleteList: async (req, res) => {
+    const id = req.params.id
+    await ListModel.findByIdAndUpdate(id, { deleted: true, deletedOn: new Date() })
+
+    res.status(200).send({ success: true, message: `List successfullyy deleted!`})
   }
 }
