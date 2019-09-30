@@ -35,12 +35,15 @@ module.exports = {
       createdOn
     })
 
+    const token = await getToken(newUser)
+
     newUser.save(error => {
       if (error) res.status(400).send({ sucesss: false, message: `Something went wrong: ${error}` })
       res.status(200).send({
         success: true,
         message: 'User added successfully!',
-        newUser
+        newUser,
+        token
       })
     })
   },
