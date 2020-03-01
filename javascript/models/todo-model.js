@@ -10,6 +10,7 @@ const TodoSchema = new Schema({
   completed: Boolean,
   deletedOn: Date,
   deleted: Boolean,
+  testing: { type: Boolean, default: false, index: true },
   user: { type: Schema.ObjectId, ref: 'User', index: true }
 })
 

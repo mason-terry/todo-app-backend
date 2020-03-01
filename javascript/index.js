@@ -8,7 +8,7 @@ const PORT = 3000 || process.env.PORT
 const routes = require('./routes')
 
 mongoose.Promise = global.Promise
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/todo')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/todo', { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'Connection Error'))
 db.once('open', () => console.log('Connection Succeeded!'))

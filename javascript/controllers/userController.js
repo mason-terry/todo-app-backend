@@ -74,7 +74,6 @@ module.exports = {
 
     const user = await UserModel.findOne({ username })
     if (!user) {
-      console.log('no user found')
       res.status(200).send({
         success: false,
         message: `We couldn't find that usename in our system...`
