@@ -1,5 +1,6 @@
 # Todo Backend Requirements
 
 # Example 
-Framework==0.9.4
-Library>=0.2
+Flask==1.1.1
+bson==0.5.9
+pymongo==3.10.1
