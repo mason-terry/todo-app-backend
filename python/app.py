@@ -18,7 +18,7 @@ db = client.todo
 def welcome():
   return 'Welcome to our Todo API!'
 
-# Fetching users
+''' USERS '''
 @app.route('/users')
 
 def fetch_users():
@@ -26,7 +26,18 @@ def fetch_users():
   response = dumps(users)
   return response
 
-# Fetching lists
+@app.route('/users/create', methods=['POST'])
+
+def create_user():
+  return 'creating user'
+
+@app.route('/users/update/<user>', methods=['PUT'])
+
+def update_user():
+  return 'updating user'
+
+
+''' LISTS '''
 @app.route('/lists')
 
 def fetch_lists():
@@ -34,13 +45,33 @@ def fetch_lists():
   response = dumps(lists)
   return response
 
-# Fetching todos
+@app.route('/lists/create', methods=['POST'])
+
+def create_list():
+  return 'creating list'
+
+@app.route('/lists/update/<list>', methods=['PUT'])
+
+def update_list():
+  return 'updating list'
+
+''' TODOS '''
 @app.route('/todos')
 
 def fetch_todos():
   todos = db.todos.find({})
   response = dumps(todos)
   return response
+
+@app.route('/todos/create', methods=['POST'])
+
+def create_todo():
+  return 'creating todo'
+
+@app.route('/todos/update/<todo>', methods=['PUT'])
+
+def update_todo():
+  return 'updating todo'
 
 if __name__ == '__main__':
   print('App running')
