@@ -1,4 +1,4 @@
-''' contoller and routes for users '''
+''' controller and routes for users '''
 import os
 from flask import request, jsonify
 from app import app, mongo
@@ -20,11 +20,11 @@ def user():
     if request.method == 'POST':
         if data.get('name', None) is not None and data.get('email', None) is not None:
             mongo.db.users.insert_one(data)
-            return jsonify({'ok': True, 'mesage': 'Useer create successfully!'}), 200
+            return jsonify({'ok': True, 'message': 'User created successfully!'}), 200
         else:
             return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
 
-    if request.metho == 'DELETE':
+    if request.method == 'DELETE':
         if data.get('email', None) is not None:
             db_response = mongo.db.users.delete_one({'email': data['email']})
             if db_response.deleted_count == 1:
@@ -33,7 +33,7 @@ def user():
                 response = {'ok': True, 'message': 'no record found'}
             return jsonify(response), 200
         else:
-            return jsonify({'ok': False, 'message': 'Bad request paramerters!'}), 400
+            return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
 
     if request.method == 'PUT':
         if data.get('query', {}) != {}:
