@@ -1,15 +1,11 @@
 import os
-from flask import Flask
-from app import users, lists, todos
+from app import users, lists, todos, db
 
 
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
-    # app.config.from_mapping(
-    #     SECRET_KEY='dev',
-    #     DATABASE=os.path.join(app.instance_path, 'todo.sqlite'),
-    # )
+    # app = Flask(__name__, instance_relative_config=True)
+    app = db.app
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -24,9 +20,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # initialize db
-    # db.init_app(app)
-    # register blueprints (auth, blog)
+    # register blueprints
     app.register_blueprint(users.bp)
     app.register_blueprint(lists.bp)
     app.register_blueprint(todos.bp)
