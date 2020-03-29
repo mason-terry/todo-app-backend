@@ -11,6 +11,7 @@ setup(
         'requests',
         'pymongo',
         'Flask-PyMongo',
-        'bson'
+        'bson',
+        'flask-cors'
     ],
 )
