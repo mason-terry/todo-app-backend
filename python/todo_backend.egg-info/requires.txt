@@ -3,3 +3,4 @@ requests
 pymongo
 Flask-PyMongo
 bson
+flask-cors
