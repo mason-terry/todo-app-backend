@@ -12,6 +12,7 @@ setup(
         'pymongo',
         'Flask-PyMongo',
         'bson',
-        'flask-cors'
+        'flask-cors',
+        'bcrypt'
     ],
 )
