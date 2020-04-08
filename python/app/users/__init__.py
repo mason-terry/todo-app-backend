@@ -24,11 +24,10 @@ def login():
     if user == None:
         return {'success': False, 'message': 'We could not find anyone with that username'}, 200
 
-    # pw_check = checkpw(password, user['password'])
-    print('=' * 20)
-    # print('pw_check', pw_check)
-    print('password in db', user['password'])
-    print('password from user', password)
-    print('=' * 20)
+    pw_check = checkpw(password.encode('utf8'),
+                       user['password'].encode('utf8'))
 
-    return {'success': True, 'user': user}, 200
+    if pw_check is True:
+        return {'success': True, 'message': 'User successfully logged in!', 'user': user}, 200
+    else:
+        return {'success': False, 'message': 'The password you entered is not correct'}, 200

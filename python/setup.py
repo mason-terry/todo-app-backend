@@ -13,6 +13,7 @@ setup(
         'Flask-PyMongo',
         'bson',
         'flask-cors',
-        'bcrypt'
+        'bcrypt',
+        'PyJWT'
     ],
 )
