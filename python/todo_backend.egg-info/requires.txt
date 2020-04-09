@@ -5,3 +5,4 @@ Flask-PyMongo
 bson
 flask-cors
 bcrypt
+PyJWT

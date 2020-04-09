@@ -28,6 +28,7 @@ def login():
                        user['password'].encode('utf8'))
 
     if pw_check is True:
-        return {'success': True, 'message': 'User successfully logged in!', 'user': user}, 200
+
+        return {'success': True, 'message': 'User successfully logged in!', 'user': user, 'token': None}, 200
     else:
         return {'success': False, 'message': 'The password you entered is not correct'}, 200
