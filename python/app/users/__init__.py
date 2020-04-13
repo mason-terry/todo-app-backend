@@ -39,4 +39,4 @@ async def login():
 async def verify():
     token = request.headers['token']
     verified = await jwt.decode(token, 'ocuqpvgtta', algorithms=['HS256'])
-    return verified, 200
+    return {'success': True, 'message': 'User successfully logged in!', 'user': verified}, 200
