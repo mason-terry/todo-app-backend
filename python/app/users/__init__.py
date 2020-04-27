@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_cors import CORS
 from bson.json_util import dumps
 from app.db import mongo
@@ -28,10 +28,11 @@ def login():
                        user['password'].encode('utf8'))
 
     if pw_check is True:
-        token = jwt.encode(user, 'ocuqpvgtta', algorithm='HS256')
+        token = jwt.encode(
+            {'username': user['username']}, 'ocuqpvgtta', algorithm='HS256')
         print('token', token)
-        # token = '12345'
-        return {'success': True, 'message': 'User successfully logged in!', 'user': user, 'token': token}, 200
+        token_formatted = token
+        return {'success': True, 'message': 'User successfully logged in!', 'user': user, 'token': token_formatted}, 200
     else:
         return {'success': False, 'message': 'The password you entered is not correct'}, 200
 
@@ -39,5 +40,6 @@ def login():
 @bp.route('/verify', methods=['GET'])
 def verify():
     token = request.headers['token']
+    print('token', token)
     verified = jwt.decode(token, 'ocuqpvgtta', algorithms=['HS256'])
     return {'success': True, 'message': 'User successfully logged in!', 'user': verified}, 200
