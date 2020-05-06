@@ -4,15 +4,18 @@ from bson.json_util import dumps
 from app.db import mongo
 from bcrypt import hashpw, checkpw, gensalt
 import jwt
+import base64
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 CORS(bp)
 
 
-@bp.route('/', methods=['GET'])
-def users():
-    users = mongo.db.users.find({})
-    res = dumps(users)
+@bp.route('/<string:user_id>', methods=['GET'])
+def user(user_id):
+    print('user_id', user_id)
+    user = mongo.db.users.find_one({'_id': user_id})
+    print('user', user)
+    res = dumps(user)
     return res, 200
 
 
@@ -21,6 +24,7 @@ def login():
     username = request.json['username']
     password = request.json['password']
     user = mongo.db.users.find_one({'username': username})
+    print('user', user)
     if user is None:
         return {'success': False, 'message': 'We could not find anyone with that username'}, 200
 
@@ -29,7 +33,7 @@ def login():
 
     if pw_check is True:
         token = jwt.encode(
-            {'username': user['username']}, 'ocuqpvgtta', algorithm='HS256')
+            {'username': user['username']}, 'ocuqpvgtta', algorithm='HS256').decode('utf8')
         return {'success': True, 'message': 'User successfully logged in!', 'user': user, 'token': token}, 200
     else:
         return {'success': False, 'message': 'The password you entered is not correct'}, 200
@@ -38,6 +42,8 @@ def login():
 @bp.route('/verify', methods=['GET'])
 def verify():
     token = request.headers['Token']
-    print('token', token)
-    verified = jwt.decode(token, 'ocuqpvgtta', algorithm='HS256')
-    return {'success': True, 'message': 'User successfully logged in!', 'user': verified}, 200
+    verified = jwt.decode(token, 'ocuqpvgtta', algorithms=['HS256'])
+    if verified:
+        return {'success': True, 'message': 'User successfully logged in!', 'user': verified}, 200
+    else:
+        return {'success': False, 'message': 'Your token does not seem to be valid'}, 404
