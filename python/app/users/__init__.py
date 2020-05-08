@@ -12,9 +12,7 @@ CORS(bp)
 
 @bp.route('/<string:user_id>', methods=['GET'])
 def user(user_id):
-    print('user_id', user_id)
     user = mongo.db.users.find_one({'_id': user_id})
-    print('user', user)
     res = dumps(user)
     return res, 200
 
@@ -24,7 +22,7 @@ def login():
     username = request.json['username']
     password = request.json['password']
     user = mongo.db.users.find_one({'username': username})
-    print('user', user)
+    user_id = dumps(user['_id'])
     if user is None:
         return {'success': False, 'message': 'We could not find anyone with that username'}, 200
 
@@ -32,8 +30,8 @@ def login():
                        user['password'].encode('utf8'))
 
     if pw_check is True:
-        token = jwt.encode(
-            {'username': user['username']}, 'ocuqpvgtta', algorithm='HS256').decode('utf8')
+        token = jwt.encode({'user_id': user_id}, 'ocuqpvgtta',
+                           algorithm='HS256').decode('utf8')
         return {'success': True, 'message': 'User successfully logged in!', 'user': user, 'token': token}, 200
     else:
         return {'success': False, 'message': 'The password you entered is not correct'}, 200
@@ -43,7 +41,11 @@ def login():
 def verify():
     token = request.headers['Token']
     verified = jwt.decode(token, 'ocuqpvgtta', algorithms=['HS256'])
+    print('verified', verified)
+    # user = mongo.db.users.find_one(
+    # {'_id': dumps(verified['user_id']['user_id'])})
+    # print('user', user)
     if verified:
-        return {'success': True, 'message': 'User successfully logged in!', 'user': verified}, 200
+        return {'success': True, 'message': 'User successfully logged in!', 'user': user}, 200
     else:
         return {'success': False, 'message': 'Your token does not seem to be valid'}, 404
